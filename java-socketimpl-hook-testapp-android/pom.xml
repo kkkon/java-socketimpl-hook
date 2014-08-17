@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <prerequisites>
+        <maven>3.1.1</maven>
+    </prerequisites>
+
+    <parent>
+        <groupId>jp.ne.sakura.kkkon.java.net.socketimpl</groupId>
+        <artifactId>java-socketimpl-hook-pom</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <groupId>jp.ne.sakura.kkkon.java.net.socketimpl</groupId>
+    <artifactId>java-socketimpl-hook-testapp-android</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>apk</packaging>
+
+    <name>Java SocketImpl Hook Test Application for Android</name>
+    <description>Java SocketImpl Hook Test Application for Android</description>
+
+  <licenses>
+    <license>
+      <name>The MIT license</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+    <properties>
+    </properties>
+
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+
+        <plugins>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>3.8.2</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <sdkPlatform>10</sdkPlatform>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.4</version>
+                <inherited>true</inherited>
+                <configuration>
+                    <skipDeploy>true</skipDeploy>
+                    <siteDirectory>${basedir}/site</siteDirectory>
+                    <outputDirectory>${project.reporting.outputDirectory}/site/${project.artifactId}</outputDirectory>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>jp.ne.sakura.kkkon.java.net.socketimpl</groupId>
+            <artifactId>java-socketimpl-hook-lib</artifactId>
+            <version>0.1-SNAPSHOT</version>
+            <!--<type>aar</type>-->
+        </dependency>
+    </dependencies>
+
+</project>

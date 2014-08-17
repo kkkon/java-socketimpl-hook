@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <prerequisites>
+        <maven>3.0.5</maven>
+    </prerequisites>
+
+    <parent>
+        <groupId>jp.ne.sakura.kkkon.java.net.socketimpl</groupId>
+        <artifactId>java-socketimpl-hook-pom</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <groupId>jp.ne.sakura.kkkon.java.net.socketimpl</groupId>
+    <artifactId>java-socketimpl-hook-lib</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>Java SocketImpl Hook</name>
+    <description>Java SocketImpl Hook</description>
+
+  <licenses>
+    <license>
+      <name>The MIT license</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+    <properties>
+        <proguard.skip>true</proguard.skip>
+    </properties>
+
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+        <testSourceDirectory>test</testSourceDirectory>
+
+        <plugins>
+            <!-- aar -->
+            <!--
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>3.8.2</version>
+                <configuration>
+                    <includeJdkLibs>false</includeJdkLibs>
+                    <proguard>
+                        <skip>false</skip>
+                        <config>proguard-project.txt</config>
+                        <options>
+                            <option>-libraryjars ${android.sdk.path}/platforms/android-10/android.jar</option>
+                        </options>
+                    </proguard>
+                </configuration>
+            </plugin>
+            -->
+            <plugin>
+                <groupId>com.pyx4me</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>2.0.4</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>proguard</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <obfuscate>false</obfuscate>
+                    <options>
+                        <option>@proguard-project.txt</option>
+                    </options>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.4</version>
+                <inherited>true</inherited>
+                <configuration>
+                    <skipDeploy>true</skipDeploy>
+                    <siteDirectory>${basedir}/site</siteDirectory>
+                    <outputDirectory>${project.reporting.outputDirectory}/site/${project.artifactId}</outputDirectory>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <dependencies>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>release-profile</id>
+
+            <properties>
+                <proguard.skip>false</proguard.skip>
+                <android.release>true</android.release>
+            </properties>
+        </profile>
+    </profiles>
+</project>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <prerequisites>
+        <maven>3.1.1</maven>
+    </prerequisites>
+
+    <groupId>jp.ne.sakura.kkkon.java.net.socketimpl</groupId>
+    <artifactId>java-socketimpl-hook-pom</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Java SocketImpl Hook POM</name>
+    <description>Java SocketImpl Hook POM</description>
+
+  <issueManagement>
+    <url>https://github.com/kkkon/java-socketimpl-hook/issues</url>
+    <system>GitHub Issues</system>
+  </issueManagement>
+
+  <licenses>
+    <license>
+      <name>The MIT license</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git:https://github.com/kkkon/java-socketimpl-hook.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/kkkon/java-socketimpl-hook.git</developerConnection>
+    <url>https://github.com/kkkon/java-socketimpl-hook</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <developers>
+    <developer>
+      <id>kkkon</id>
+      <name>Kiyofumi Kondoh</name>
+    </developer>
+  </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.5</maven.compiler.source>
+        <maven.compiler.target>1.5</maven.compiler.target>
+
+        <android.sdk.path>${env.ANDROID_HOME}</android.sdk.path>
+
+        <dryRun>true</dryRun>
+        <github.site.dryRun>true</github.site.dryRun>
+        <github.site.skip>true</github.site.skip> <!-- over 0.9 -->
+        <ignoreSnapshots>true</ignoreSnapshots>
+    </properties>
+
+    <modules>
+        <module>java-socketimpl-hook-lib</module>
+        <module>java-socketimpl-hook-testapp-android</module>
+    </modules>
+
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+        <testSourceDirectory>test</testSourceDirectory>
+
+        <plugins>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>3.8.2</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <sdkPlatform>10</sdkPlatform>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.4</version>
+                <inherited>true</inherited>
+                <configuration>
+                    <skipDeploy>true</skipDeploy>
+                    <siteDirectory>${basedir}/site</siteDirectory>
+                    <outputDirectory>${project.reporting.outputDirectory}/site</outputDirectory>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <releaseProfiles>release-profile</releaseProfiles>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.1</version>
+                <configuration>
+                    <altReleaseDeploymentRepository>internal.repo::default::file:///${project.reporting.outputDirectory}/releases</altReleaseDeploymentRepository>
+                    <altSnapshotDeploymentRepository>internal.repo::default::file:///${project.reporting.outputDirectory}/snapshots</altSnapshotDeploymentRepository>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.10-SNAPSHOT</version>
+                <inherited>true</inherited>
+                <configuration>
+                    <message>Maven artifacts for ${project.artifactId} ${project.version}</message>
+                    <noJekyll>true</noJekyll>
+                    <outputDirectory>${project.reporting.outputDirectory}</outputDirectory>
+                    <excludes>
+                    <exclude>snapshots</exclude>
+                    </excludes>
+                    <branch>refs/heads/gh-pages</branch>
+                    <merge>true</merge>
+                    <path>maven</path>
+                    <dryRun>${github.site.dryRun}</dryRun>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <version>2.3.3</version>
+            <scope>system</scope>
+            <systemPath>${android.sdk.path}/platforms/android-10/android.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+
+    <distributionManagement>
+        <repository>
+            <id>release-kkkon.github.io</id>
+            <name>Java SocketImpl Hook Maven Release Repository</name>
+            <url>http://kkkon.github.io/java-socketimpl-hook/maven/releases</url>
+        </repository>
+        <site>
+            <id>kkkon.github.io</id>
+            <name>Java SocketImpl Hook Maven Site</name>
+            <url>http://kkkon.github.io/java-socketimpl-hook</url>
+        </site>
+    </distributionManagement>
+
+</project>
